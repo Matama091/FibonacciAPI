@@ -2,28 +2,31 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/ant0ine/go-json-rest/rest"
+
+	"log"
+	"net/http"
 )
 
 func main() {
-	var N int // 人数
-	fmt.Scan(&N)
+	api := rest.NewApi()
+	api.Use(rest.DefaultDevStack...)
 
-	Number := make(map[int]bool, N)
-
-	A := make([]int, N) // 数字
-	for i := 0; i < N; i++ {
-		fmt.Scan(&A[i])
-
+	router, err := rest.MakeRouter(
+		rest.Get("/fib", GetFibonacci),
+	)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	for i := 0; i < N; i++ {
-		if Number[A[i]] {
-			fmt.Println(i + 1)
-			return
-		}
+	api.SetApp(router)
+	log.Fatal(http.ListenAndServe(":8080", api.MakeHandler()))
+}
 
-		Number[A[i]] = true
-	}
+func GetFibonacci(w rest.ResponseWriter, r *rest.Request) {
+	number := r.PathParam("fib")
 
-	fmt.Println("-1")
+	fmt.Println(number)
+	w.WriteJson(map[string]string{"result": number})
 }
