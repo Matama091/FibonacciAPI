@@ -2,26 +2,26 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/ant0ine/go-json-rest/rest"
 
-	"log"
 	"net/http"
 )
 
 func main() {
-	api := rest.NewApi()
-	api.Use(rest.DefaultDevStack...)
+	http.HandleFunc("/", Handler)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
 
-	router, err := rest.MakeRouter(
-		rest.Get("/fib", GetFibonacci),
-	)
-	if err != nil {
-		log.Fatal(err)
+func Handler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		if r.URL.Path == "/fib" {
+			fmt.Println(r.URL.Query())
+			w.Write([]byte(r.URL.Query().Get("n")))
+		}
 	}
-
-	api.SetApp(router)
-	log.Fatal(http.ListenAndServe(":8080", api.MakeHandler()))
 }
 
 func GetFibonacci(w rest.ResponseWriter, r *rest.Request) {
