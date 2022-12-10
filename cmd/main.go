@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-
-	"github.com/ant0ine/go-json-rest/rest"
+	"strconv"
 
 	"net/http"
 )
@@ -18,15 +17,22 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		if r.URL.Path == "/fib" {
-			fmt.Println(r.URL.Query())
-			w.Write([]byte(r.URL.Query().Get("n")))
+			n, err := strconv.Atoi(r.URL.Query().Get("n"))
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+			number := Fibonacci(n)
+			fmt.Println(number)
+
+			w.Write([]byte(strconv.Itoa(number)))
 		}
 	}
 }
 
-func GetFibonacci(w rest.ResponseWriter, r *rest.Request) {
-	number := r.PathParam("fib")
-
-	fmt.Println(number)
-	w.WriteJson(map[string]string{"result": number})
+func Fibonacci(n int) int {
+	if n < 2 {
+		return n
+	}
+	return Fibonacci(n-2) + Fibonacci(n-1)
 }
