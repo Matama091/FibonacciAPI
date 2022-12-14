@@ -1,3 +1,4 @@
-{  "routes": [
-    { "src": "/api/fib", "dest": "/fib" }
-  ]}
+{    "redirects": [
+    { "source": "/api/fib", "destination": "/fib" }
+  ]
+}
