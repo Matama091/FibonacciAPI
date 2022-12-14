@@ -1,4 +1,4 @@
 {    "redirects": [
-    { "source": "/api/fib", "destination": "/fib" }
+    { "source": "/fib", "destination": "/api/fib" }
   ]
 }

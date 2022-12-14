@@ -3,7 +3,6 @@ package fib
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"math/big"
 	"strconv"
 
@@ -25,10 +24,9 @@ type ErrorResponse struct {
 // }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.Path)
 	switch r.Method {
 	case "GET":
-		if r.URL.Path == "/fib" {
+		if r.URL.Path == "/api/fib" {
 			n, err := GetParameter(r)
 			if err != nil {
 				response := ErrorResponse{Status: http.StatusBadRequest, Message: err.Error()}
