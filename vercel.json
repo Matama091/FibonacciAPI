@@ -1,4 +1,4 @@
-{    "redirects": [
+{    "rewrites": [
     { "source": "/fib", "destination": "/api/fib" }
   ]
 }
