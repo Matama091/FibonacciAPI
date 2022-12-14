@@ -68,7 +68,10 @@ func Fibonacci(n int) (*big.Int, error) {
 		err := errors.New("not supported for values less than 0")
 		return nil, err
 	}
-	// TODO:nの上限設定
+	if n < 500000 {
+		err := errors.New("this value exceeds the specified value")
+		return nil, err
+	}
 	x, y := big.NewInt(0), big.NewInt(1)
 	for i := 0; i < n; i++ {
 		x, y = y, new(big.Int).Add(x, y)
