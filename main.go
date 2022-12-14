@@ -1,9 +1,8 @@
-package main
+package handler
 
 import (
 	"encoding/json"
 	"errors"
-	"log"
 	"math/big"
 	"strconv"
 
@@ -19,10 +18,10 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-func main() {
-	http.HandleFunc("/", Handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
+// func main() {
+// 	http.HandleFunc("/", Handler)
+// 	log.Fatal(http.ListenAndServe(":8080", nil))
+// }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
