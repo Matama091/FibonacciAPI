@@ -1,3 +1,3 @@
 module github.com/Matama091/FibonacciAPI
 
-go 1.19
+go 1.17
