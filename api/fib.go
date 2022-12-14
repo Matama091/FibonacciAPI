@@ -67,8 +67,7 @@ func Fibonacci(n int) (*big.Int, error) {
 	if n < 0 {
 		err := errors.New("not supported for values less than 0")
 		return nil, err
-	}
-	if n < 500000 {
+	} else if n > 500000 {
 		err := errors.New("this value exceeds the specified value")
 		return nil, err
 	}
