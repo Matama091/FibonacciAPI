@@ -30,38 +30,29 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/fib" {
 			n, err := GetParameter(r)
 			if err != nil {
-				response := CreateErrorResponse(err, http.StatusBadRequest)
+				response := ErrorResponse{Status: http.StatusBadRequest, Message: err.Error()}
 				json.NewEncoder(w).Encode(&response)
 				return
 			}
 
 			number, err := Fibonacci(n)
 			if err != nil {
-				response := CreateErrorResponse(err, http.StatusInternalServerError)
+				response := ErrorResponse{Status: http.StatusInternalServerError, Message: err.Error()}
 				json.NewEncoder(w).Encode(&response)
 				return
 			}
 
-			response := Response{
-				Result: number.String(),
-			}
+			response := Response{Result: number.String()}
 			json.NewEncoder(w).Encode(&response)
 		} else {
 			err := errors.New("unknown parameters")
-			response := CreateErrorResponse(err, http.StatusBadRequest)
+			response := ErrorResponse{Status: http.StatusBadRequest, Message: err.Error()}
 			json.NewEncoder(w).Encode(&response)
 		}
 	default:
 		err := errors.New("this method is not allowed")
-		response := CreateErrorResponse(err, http.StatusMethodNotAllowed)
+		response := ErrorResponse{Status: http.StatusMethodNotAllowed, Message: err.Error()}
 		json.NewEncoder(w).Encode(&response)
-	}
-}
-
-func CreateErrorResponse(err error, status int) ErrorResponse {
-	return ErrorResponse{
-		Status:  status,
-		Message: err.Error(),
 	}
 }
 
@@ -79,7 +70,6 @@ func Fibonacci(n int) (*big.Int, error) {
 		return nil, err
 	}
 	// TODO:nの上限設定
-
 	x, y := big.NewInt(0), big.NewInt(1)
 	for i := 0; i < n; i++ {
 		x, y = y, new(big.Int).Add(x, y)
