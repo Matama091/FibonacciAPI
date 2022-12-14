@@ -11,7 +11,6 @@ import (
 )
 
 type Response struct {
-	Status int    `json:"status"`
 	Result string `json:"result"`
 }
 
